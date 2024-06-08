@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Layout } from "./routes/Layout.tsx"
 import { Home } from "./routes/Home.tsx"
 import { theme } from "./theme/theme.ts"
+import { Event } from "./routes/Event.tsx"
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "event/:eventId",
+        element: <Event />,
       },
     ],
   },

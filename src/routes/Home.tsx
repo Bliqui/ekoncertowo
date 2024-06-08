@@ -1,23 +1,34 @@
 import { useState } from "react"
-import { Box, Container, Flex, Spinner, Text } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Spinner,
+  Text,
+  Link,
+} from "@chakra-ui/react"
+import { Link as RouterLink, useSearchParams } from "react-router-dom"
 
 import { SearchSection } from "../components/SearchSection"
 import { Listing } from "../components/Listing"
 import { Card } from "../components/Card"
 import { useGetEvents } from "../service/hooks/useGetEvents"
 import { Event } from "../service/types"
+import { useHandleQueryParams } from "../hooks"
 
 export const Home = () => {
-  const [queryParams, setQueryParams] = useState({
-    event: "",
-    country: "",
-    date: "",
+  const { setQueryParams, queryParams } = useHandleQueryParams()
+
+  const { data, isLoading, nextPageNumber } = useGetEvents({
+    keyword: queryParams?.event,
+    countryCode: queryParams?.country,
+    date: queryParams?.date,
+    page: queryParams?.page,
   })
 
-  const { data, isLoading } = useGetEvents({
-    keyword: queryParams.event,
-    countryCode: queryParams.country,
-  })
+  const onLoadMoreClick = () => setQueryParams({ page: nextPageNumber })
+
   const shouldShowSpinner = isLoading && !data?._embedded?.events
 
   return (
@@ -25,11 +36,6 @@ export const Home = () => {
       <SearchSection
         heading="Dźwięki, które łączą - koncerty, które inspirują."
         pt="72px"
-        setQueryParams={(params: {
-          event: string
-          country: string
-          date: string
-        }) => setQueryParams(params)}
       />
       <Flex backgroundColor="white" w="100%" flexGrow={1}>
         <Container
@@ -45,10 +51,13 @@ export const Home = () => {
           {!shouldShowSpinner ? (
             <Content events={data?._embedded?.events || []} />
           ) : (
-            <Spinner />
+            <Spinner size="lg" />
           )}
         </Container>
       </Flex>
+      {nextPageNumber && (
+        <Button onClick={onLoadMoreClick}>Załaduj więcej</Button>
+      )}
     </Box>
   )
 }
@@ -61,12 +70,14 @@ const Content = ({ events }: { events: Event[] }) => {
   return (
     <Listing>
       {events?.map((event) => (
-        <Card
-          image={event.images[0]}
-          title={event.name}
-          date={event.dates.start.localDate}
-          key={event.id}
-        />
+        <Link to={`/event/${event.id}`} as={RouterLink}>
+          <Card
+            image={event.images[0]}
+            title={event.name}
+            date={event.dates.start.localDate}
+            key={event.id}
+          />
+        </Link>
       ))}
     </Listing>
   )

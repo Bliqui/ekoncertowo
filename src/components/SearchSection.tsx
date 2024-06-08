@@ -1,21 +1,21 @@
 import { Container, StackProps, Text, VStack } from "@chakra-ui/react"
 import bgImageUrl from "assets/bg-image.png"
+
 import { Filters } from "./Filters"
+import { useHandleQueryParams } from "../hooks"
 
 type SearchSectionProps = {
   heading: string
-  setQueryParams: (args: {
-    event: string
-    country: string
-    date: string
-  }) => void
+  onSubmit?: (args: { event: string; country: string; date: string }) => void
 } & StackProps
 
 export const SearchSection = ({
   heading,
-  setQueryParams,
+  onSubmit,
   ...props
 }: SearchSectionProps) => {
+  const { setQueryParams } = useHandleQueryParams()
+
   return (
     <VStack
       width="100%"
@@ -47,7 +47,12 @@ export const SearchSection = ({
         <Text textStyle="h3" color="textSecondary" textAlign="center" mb="19px">
           {heading}
         </Text>
-        <Filters setQueryParams={setQueryParams} />
+        <Filters
+          setQueryParams={(params) => {
+            setQueryParams(params)
+            onSubmit?.(params)
+          }}
+        />
       </Container>
     </VStack>
   )

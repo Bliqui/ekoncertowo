@@ -1,5 +1,4 @@
 import {
-  Text,
   Flex,
   Button,
   IconButton,
@@ -9,7 +8,10 @@ import {
   MenuList,
   MenuItem,
   useTheme,
+  Link,
 } from "@chakra-ui/react"
+import { Link as RouterLink } from "react-router-dom"
+
 import IcoCart from "assets/cart.svg?react"
 import IcoProfile from "assets/profile.svg?react"
 import IcoHamburgerMenu from "assets/hamburger.svg?react"
@@ -31,9 +33,9 @@ export const Header = () => {
       width="100%"
       zIndex={2}
     >
-      <Text textStyle="h1" color="textAccent">
+      <Link as={RouterLink} to={"/"} textStyle="h1" color="textAccent">
         ekoncertowo.pl
-      </Text>
+      </Link>
       <Flex gap="32px" display={{ base: "none", lg: "flex" }}>
         <Button>Założ konto</Button>
         <IconButton variant="outline" icon={<IcoCart />} aria-label="Koszyk" />

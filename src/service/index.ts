@@ -1,7 +1,8 @@
 import axios from "axios"
-import { EventsResponse } from "./types"
+import { EventResponse, EventsResponse } from "./types"
 
 const eventsEndpoint = "/events.php"
+const eventEndpoint = "/event.php"
 const baseUrl = "http://127.0.0.1:8000"
 
 const headers = {
@@ -27,11 +28,24 @@ export class APIService {
     return parsed
   }
 
-  getEvents = async (params: { keyword: string; countryCode: string }) => {
+  getEvents = async (params: {
+    keyword: string
+    countryCode: string
+    page: number
+  }) => {
     const parsedParams = this.parseParams(params)
 
     return axios.get<EventsResponse>(
       baseUrl + eventsEndpoint + `?${parsedParams}`,
+      { headers }
+    )
+  }
+
+  getEvent = async (params: { event_id: string }) => {
+    const parsedParams = this.parseParams(params)
+
+    return axios.get<EventResponse>(
+      baseUrl + eventEndpoint + `?${parsedParams}`,
       { headers }
     )
   }
