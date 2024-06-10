@@ -1,9 +1,9 @@
 import axios from "axios"
 import { EventResponse, EventsResponse } from "./types"
 
-const eventsEndpoint = "/events.php"
+const eventsEndpoint = "/api.php"
 const eventEndpoint = "/event.php"
-const baseUrl = "http://127.0.0.1:8000"
+const baseUrl = "http://ekoncertowo.pl"
 
 const headers = {
   Accept:
