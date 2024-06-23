@@ -1,4 +1,3 @@
-import { filterEmptyValues } from "./../utils/index"
 import { useSearchParams } from "react-router-dom"
 import { filterEmptyValues, paramsToObject } from "../utils"
 

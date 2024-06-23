@@ -15,7 +15,8 @@ type FiltersProps = {
   setQueryParams: (args: {
     event: string
     country: string
-    date: string
+    startDate: string
+    endDate: string
   }) => void
 }
 
@@ -23,7 +24,8 @@ export const Filters = ({ setQueryParams }: FiltersProps) => {
   const [formValues, setFormValues] = useState({
     event: "",
     country: "",
-    date: "",
+    startDate: "",
+    endDate: "",
   })
 
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
@@ -60,13 +62,31 @@ export const Filters = ({ setQueryParams }: FiltersProps) => {
           ))}
         </Select>
       </InputGroup>
-      <Input type="date" width="230px" value={formValues.date} />
+      <Flex gap="12px" flexWrap="wrap" justifyContent="center">
+        <Input
+          type="date"
+          width="230px"
+          value={formValues.startDate}
+          onChange={(e) =>
+            setFormValues((prev) => ({ ...prev, startDate: e.target.value }))
+          }
+        />
+        <Input
+          type="date"
+          width="230px"
+          value={formValues.endDate}
+          onChange={(e) =>
+            setFormValues((prev) => ({ ...prev, endDate: e.target.value }))
+          }
+        />
+      </Flex>
       <IconButton
         onClick={handleSubmit}
         background="textAccent"
         icon={<IcoSearch />}
         type="submit"
         aria-label="Submit search form"
+        width={{ base: "230px", md: "25px" }}
       />
     </Flex>
   )

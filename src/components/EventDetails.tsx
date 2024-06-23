@@ -19,6 +19,8 @@ import {
   formatFullDate,
   getFullUrl,
   getWeatherName,
+  toastError,
+  toastInfo,
 } from "../utils"
 
 export const EventDetails = ({
@@ -51,8 +53,16 @@ export const EventDetails = ({
       <Flex gap="20px" alignItems="center">
         <Heading>{event?.name}</Heading>
         <IcoShare
-          onClick={async () => await copyToClipboard(getFullUrl())}
+          onClick={async () => {
+            try {
+              await copyToClipboard(getFullUrl())
+              toastInfo("Link do ewentu został skopiowany")
+            } catch (err) {
+              toastError("Coś poszło nie tak")
+            }
+          }}
           aria-label='Przycisk "Skopiuj link do ewentu"'
+          cursor="pointer"
         />
       </Flex>
       <Flex flexWrap="wrap" gap="20px">
@@ -67,7 +77,7 @@ export const EventDetails = ({
         </Flex>
       </Flex>
       <Flex mt="50px" gap="20px" flexDir="row" flexWrap="wrap">
-        <Flex flexDir="column" gap="10px" w="33%">
+        <Flex flexDir="column" gap="10px" w={{ base: "100%", lg: "33%" }}>
           <Text textStyle="h3" display="inline">
             Ewent:
           </Text>
@@ -80,7 +90,12 @@ export const EventDetails = ({
         </Flex>
 
         {event && (
-          <Flex width="32%" flexDir="column" flexShrink={0} gap="10px">
+          <Flex
+            w={{ base: "100%", lg: "32%" }}
+            flexDir="column"
+            flexShrink={0}
+            gap="10px"
+          >
             <Text textStyle="h3" display="inline">
               Ewent na mapie:
             </Text>
@@ -93,7 +108,7 @@ export const EventDetails = ({
           </Flex>
         )}
 
-        <Flex maxW="28%" flexDir="column" gap="10px">
+        <Flex w="100%" maxW={{ lg: "28%" }} flexDir="column" gap="10px">
           <Text textStyle="h3">Dane dotyczące pogody:</Text>
           <Text>
             Warunki pogodowe:{" "}

@@ -1,3 +1,6 @@
+import { ToastOptions, toast } from "react-toastify"
+import { toastDefaultProperties } from "./consts"
+
 export const filterEmptyValues = (object: Record<string, string>) => {
   const params = Object.entries(object)
 
@@ -75,4 +78,46 @@ export const copyToClipboard = (text: string) => {
     document.execCommand("copy") ? res() : rej()
     textArea.remove()
   })
+}
+
+export const toastInfo = (text: string, options?: ToastOptions) =>
+  toast.info(text, { ...toastDefaultProperties, ...options })
+export const toastSuccess = (text: string, options?: ToastOptions) =>
+  toast.success(text, { ...toastDefaultProperties, ...options })
+export const toastWarn = (text: string, options?: ToastOptions) =>
+  toast.warn(text, { ...toastDefaultProperties, ...options })
+export const toastError = (text: string, options?: ToastOptions) =>
+  toast.error(text, { ...toastDefaultProperties, ...options })
+
+export const getDateRange = (startDate: string = "", endDate: string = "") => {
+  let startEndDateTime = ""
+
+  if (startDate || endDate) {
+    const isStartDateBeforeEndDate = startDate < endDate
+
+    if (startDate && endDate) {
+      const formattedStartDate =
+        new Date(startDate).toISOString().split(".")[0] + "Z"
+      const formattedEndDate =
+        new Date(endDate).toISOString().split(".")[0] + "Z"
+
+      if (isStartDateBeforeEndDate) {
+        startEndDateTime = `${formattedStartDate},${formattedEndDate}`
+      } else {
+        startEndDateTime = `${formattedEndDate},${formattedStartDate}`
+      }
+    } else if (startDate) {
+      const formattedStartDate =
+        new Date(startDate).toISOString().split(".")[0] + "Z"
+
+      startEndDateTime = `${formattedStartDate},*`
+    } else if (endDate) {
+      const formattedEndDate =
+        new Date(endDate).toISOString().split(".")[0] + "Z"
+
+      startEndDateTime = `*,${formattedEndDate}`
+    }
+  }
+
+  return startEndDateTime
 }

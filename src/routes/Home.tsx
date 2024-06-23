@@ -16,6 +16,7 @@ import { Card } from "../components/Card"
 import { useGetEvents } from "../service/hooks/useGetEvents"
 import { Event } from "../service/types"
 import { useHandleQueryParams } from "../hooks"
+import { getDateRange } from "../utils"
 
 export const Home = () => {
   const { setQueryParams, queryParams } = useHandleQueryParams()
@@ -23,7 +24,10 @@ export const Home = () => {
   const { data, isLoading, nextPageNumber } = useGetEvents({
     keyword: queryParams?.event,
     countryCode: queryParams?.country,
-    date: queryParams?.date,
+    startEndDateTime: getDateRange(
+      queryParams?.startDate,
+      queryParams?.endDate
+    ),
     page: queryParams?.page,
   })
 
